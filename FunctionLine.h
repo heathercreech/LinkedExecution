@@ -15,17 +15,19 @@
 
 #pragma once
 
+
 #include <boost\any.hpp>
 #include <boost\function.hpp>
 
 #include <vector>
 
 
+//takes the value type that is to be modified (looking at different ways to handle mutiple/varying parameters)
 template <typename T>
 class FunctionLine{
 public:
-	FunctionLine() {};
-
+	
+	//function list initializer
 	FunctionLine(std::vector<boost::function<T (T)>> functions) {
 		if (functions.size() > 0) {
 			func = *functions.begin();
@@ -37,6 +39,7 @@ public:
 	};
 
 
+	//executes the string of functions
 	T execute(T val) {
 		if (next != NULL) {
 			return next->execute(func(val));
@@ -47,6 +50,6 @@ public:
 	};
 
 private:
-	boost::function<T(T)> func;
-	FunctionLine* next = NULL;
+	boost::function<T(T)> func; //the function to be executed
+	FunctionLine* next = NULL; //the next function in the line
 };
