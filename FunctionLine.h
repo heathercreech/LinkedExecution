@@ -13,22 +13,40 @@
 	GNU General Public License for more details.
 */
 
+#pragma once
 
-#include "FunctionLine.h"
+#include <boost\any.hpp>
+#include <boost\function.hpp>
 
-#include <iostream>
-
-int add2(int val) {
-	return val + 2;
-}
-
-int mult5(int val) {
-	return val * 5;
-}
+#include <vector>
 
 
-int main(int arc, char* argv[]) {
-	FunctionLine<int> line({add2, mult5});
+template <typename T>
+class FunctionLine{
+public:
+	FunctionLine() {};
 
-	std::cout << line.execute(5) << std::endl;
-}
+	FunctionLine(std::vector<boost::function<T (T)>> functions) {
+		if (functions.size() > 0) {
+			func = *functions.begin();
+			if (functions.size() > 1) {
+				functions.erase(functions.begin());
+				next = new FunctionLine(functions);
+			}
+		}
+	};
+
+
+	T execute(T val) {
+		if (next != NULL) {
+			return next->execute(func(val));
+		}
+		else {
+			return func(val);
+		}
+	};
+
+private:
+	boost::function<T(T)> func;
+	FunctionLine* next = NULL;
+};
