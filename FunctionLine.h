@@ -39,7 +39,7 @@ public:
 	};
 
 
-	//executes the string of functions
+	//executes the line of functions
 	T execute(T val) {
 		if (next != NULL) {
 			return next->execute(func(val));
