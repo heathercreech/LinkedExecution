@@ -18,17 +18,52 @@
 
 #include <iostream>
 
-int add2(int val) {
-	return val + 2;
-}
 
-int mult5(int val) {
-	return val * 5;
+//container for all the functions used in the examples
+namespace exfunc {
+	int add2(int val) {
+		return val + 2;
+	}
+
+	int mult5(int val) {
+		return val * 5;
+	}
+
+
+	std::vector<std::string>& replaceEWithJ(std::vector<std::string> &string_vector) {
+
+		for (unsigned int i = 0; i < string_vector.size(); i++) {
+			for (unsigned int j = 0; j < string_vector[i].size(); j++) {
+				if (string_vector[i][j] == 'e') {
+					string_vector[i][j] = 'j';
+				}
+				else if (string_vector[i][j] == 'E') {
+					string_vector[i][j] = 'J';
+				}
+			}
+		}
+		return string_vector;
+	}
+
+
+	std::vector<std::string>& sortStringVector(std::vector<std::string> &string_vector) {
+		std::sort(string_vector.begin(), string_vector.end());
+		return string_vector;
+	}
 }
 
 
 int main(int arc, char* argv[]) {
-	FunctionLine<int> line({add2, mult5});
+	FunctionLine<int> line({exfunc::add2, exfunc::mult5});
+	std::cout << line.execute(5) << "\n\n";
 
-	std::cout << line.execute(5) << std::endl;
+
+	//Modify contents of strings in a vector, then sort
+	std::vector<std::string> mod_vec({"Everyone", "Hello", "World"});
+	FunctionLine<std::vector<std::string>> vec_line({exfunc::replaceEWithJ, exfunc::sortStringVector});
+	mod_vec = vec_line.execute(mod_vec);
+
+	for (unsigned int i = 0; i < mod_vec.size(); i++) {
+		std::cout << mod_vec[i] << "\n";
+	}
 }
