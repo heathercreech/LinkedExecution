@@ -53,7 +53,9 @@ namespace exfunc {
 }
 
 
+
 int main(int arc, char* argv[]) {
+	//line of addition and multiplication
 	FunctionLine<int> line({exfunc::add2, exfunc::mult5});
 	std::cout << line.execute(5) << "\n\n";
 
